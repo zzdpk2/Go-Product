@@ -11,10 +11,10 @@ func main() {
 	var a2 [3]int
 	fmt.Printf("a2: %v, len: %d, cap: %d", a2, len(a2), cap(a2))
 
-	//a1 = append(a1, 12) 数组不支持 append 操作
+	// a1 = append(a1, 12) 数组不支持 append 操作
 
 	// 按下标索引
 	fmt.Printf("a1[1]: %d", a1[1])
 	// 超出下标范围，直接崩溃，编译不通过
-	//fmt.Printf("a1[99]: %d", a1[99])
+	// fmt.Printf("a1[99]: %d", a1[99])
 }

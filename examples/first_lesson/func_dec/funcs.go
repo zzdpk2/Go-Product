@@ -35,7 +35,7 @@ func Fun2(a string, b string) (age int, name string) {
 	age = 19
 	name = "Tom"
 	return
-	//return 19, "Tom" // 这样返回也可以
+	// return 19, "Tom" // 这样返回也可以
 }
 
 // Fun3 多个参数具有相同类型放在一起，可以只写一次类型
@@ -44,11 +44,11 @@ func Fun3(a, b, c string, abc, bcd int, p string) (d, e int, g string) {
 	e = 16
 	g = "你好"
 	return
-	//return 0, 0, "你好" // 这样也可以
+	// return 0, 0, "你好" // 这样也可以
 }
 
 // Fun4 不定参数。不定参数要放在最后面
-func Fun4(a string, b int, names...string)  {
+func Fun4(a string, b int, names ...string) {
 	// 我们使用的时候可以直接把 names 看做切片
 	for _, name := range names {
 		fmt.Printf("不定参数：%s \n", name)
