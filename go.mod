@@ -1,4 +1,4 @@
-module geektime/toy-web
+module goProduct/dummy-web
 
 go 1.19
 
