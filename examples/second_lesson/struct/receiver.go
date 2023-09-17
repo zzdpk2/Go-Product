@@ -7,7 +7,7 @@ func main() {
 	// 因为 u 是结构体，所以方法调用的时候它数据是不会变的
 	u := User{
 		Name: "Tom",
-		Age: 10,
+		Age:  10,
 	}
 	u.ChangeName("Tom Changed!")
 	u.ChangeAge(100)
@@ -16,7 +16,7 @@ func main() {
 	// 因为 up 指针，所以内部的数据是可以被改变的
 	up := &User{
 		Name: "Jerry",
-		Age: 12,
+		Age:  12,
 	}
 
 	// 因为 ChangeName 的接收器是结构体
@@ -29,15 +29,21 @@ func main() {
 
 type User struct {
 	Name string
-	Age int
+	Age  int
 }
 
 // 结构体接收器
-func (u User) ChangeName(newName string)  {
+func (u User) ChangeName(newName string) {
 	u.Name = newName
 }
 
 // 指针接收器
 func (u *User) ChangeAge(newAge int) {
 	u.Age = newAge
+}
+
+type Handle func()
+
+func (h Handle) Hello() {
+
 }

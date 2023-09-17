@@ -28,7 +28,8 @@ func main() {
 
 	// SubSlice()
 
-	//shareArr()
+	// shareArr()
+	ShareSlice()
 }
 
 func SubSlice() {
@@ -44,7 +45,7 @@ func SubSlice() {
 }
 
 func ShareSlice() {
-
+	fmt.Println("\nInto Share Slice......")
 	s1 := []int{1, 2, 3, 4}
 	s2 := s1[2:]
 	fmt.Printf("s1: %v, len %d, cap: %d \n", s1, len(s1), cap(s1))

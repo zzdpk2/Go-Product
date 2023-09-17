@@ -11,5 +11,6 @@ func main() {
 	}()
 
 	panic("Boom")
+	// 这里不会执行
 	fmt.Println("这里将不会执行下来")
 }

@@ -7,11 +7,11 @@ import (
 	"net/http"
 )
 
-func home(w http.ResponseWriter, r *http.Request)  {
+func home(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hi, this is home page")
 }
 
-func readBodyOnce(w http.ResponseWriter, r *http.Request)  {
+func readBodyOnce(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		fmt.Fprintf(w, "read body failed: %v", err)
@@ -31,8 +31,10 @@ func readBodyOnce(w http.ResponseWriter, r *http.Request)  {
 	fmt.Fprintf(w, "read the data one more time: [%s] and read data length %d \n", string(body), len(body))
 }
 
-
 func getBodyIsNil(w http.ResponseWriter, r *http.Request) {
+	// r.Body 只能读一次
+	// body, _ := r.GetBody()
+	// io.ReadAll(body)
 	if r.GetBody == nil {
 		fmt.Fprint(w, "GetBody is nil \n")
 	} else {
@@ -45,7 +47,7 @@ func queryParams(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "query is %v\n", values)
 }
 
-func wholeUrl(w http.ResponseWriter, r *http.Request)  {
+func wholeUrl(w http.ResponseWriter, r *http.Request) {
 	data, _ := json.Marshal(r.URL)
 	fmt.Fprintf(w, string(data))
 }
@@ -54,13 +56,13 @@ func header(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "header is %v\n", r.Header)
 }
 
-func form(w http.ResponseWriter, r *http.Request)  {
+func form(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "before parse form %v\n", r.Form)
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Fprintf(w, "parse form error %v\n", r.Form)
 	}
-	fmt.Fprintf(w, "before parse form %v\n", r.Form)
+	fmt.Fprintf(w, "after parse form %v\n", r.Form)
 }
 
 func main() {
