@@ -9,6 +9,8 @@ func main() {
 	n.Report()
 }
 
+type fakeNews = News
+
 type News struct {
 	Name string
 }
@@ -16,5 +18,3 @@ type News struct {
 func (d News) Report() {
 	fmt.Println("I am news: " + d.Name)
 }
-
-type fakeNews = News

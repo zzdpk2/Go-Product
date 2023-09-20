@@ -46,12 +46,17 @@ func (h *HandlerBasedOnTree) createSubTree(root *node, paths []string, handlerFn
 }
 
 func (h *HandlerBasedOnTree) findMatchedChild(root *node, path string) (*node, bool) {
+	var wildCardNode *node
 	for _, child := range root.children {
-		if child.path == path {
+		if child.path == path && child.path == "*" {
 			return child, true
 		}
+
+		if child.path == "*" {
+			wildCardNode = child
+		}
 	}
-	return nil, false
+	return wildCardNode, wildCardNode != nil
 }
 
 func newNode(path string) *node {
