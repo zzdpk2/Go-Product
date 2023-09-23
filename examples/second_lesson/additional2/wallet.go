@@ -2,17 +2,34 @@ package main
 
 import "fmt"
 
-// type Bitcoin float64
+type Bitcoin float64
 
-type Wallet struct {
-	balance float64
+type Stringer interface {
+	String() string
 }
 
-func (w *Wallet) Balance() float64 {
+type Wallet struct {
+	balance Bitcoin
+}
+
+func (b Bitcoin) String() string {
+	return fmt.Sprintf("%f BTC", b)
+}
+
+func (w *Wallet) Balance() Bitcoin {
 	fmt.Println("address of balance in Deposit is", &w.balance)
 	return w.balance
 }
 
-func (w *Wallet) Deposit(amount float64) {
+func (w *Wallet) Deposit(amount Bitcoin) {
 	w.balance += amount
+}
+
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+	if w.Balance() < amount {
+		return fmt.Errorf("insufficient balance %v", amount)
+	}
+
+	w.balance -= amount
+	return nil
 }
