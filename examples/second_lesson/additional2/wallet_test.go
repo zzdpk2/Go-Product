@@ -1,55 +1,53 @@
 package main
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestWallet(t *testing.T) {
-
-	assertBalance := func(t *testing.T, wallet Wallet, want Bitcoin) {
-		got := wallet.Balance()
-
-		if got != want {
-			t.Errorf("got %s want %s", got, want)
-		}
-	}
 
 	t.Run("Deposit", func(t *testing.T) {
 		wallet := Wallet{}
 		wallet.Deposit(Bitcoin(10))
-		want := Bitcoin(10)
-		assertBalance(t, wallet, want)
+
+		assertBalance(t, wallet, Bitcoin(10))
 	})
 
-	t.Run("Withdraw Succeeded", func(t *testing.T) {
-		wallet := Wallet{balance: Bitcoin(20)}
-		wallet.Withdraw(10.0)
-		want := Bitcoin(10)
-		assertBalance(t, wallet, want)
+	t.Run("Withdraw with funds", func(t *testing.T) {
+		wallet := Wallet{Bitcoin(20)}
+		err := wallet.Withdraw(Bitcoin(10))
+
+		assertBalance(t, wallet, Bitcoin(10))
+		assertNoError(t, err)
 	})
 
-	assertError := func(t *testing.T, err error, want error) {
-		if err == nil {
-			t.Fatal("didn't get an error but wanted one")
-		}
-		if err != want {
-			t.Errorf("got '%s', want '%s'", err, want)
-		}
-	}
+	t.Run("Withdraw insufficient funds", func(t *testing.T) {
+		wallet := Wallet{Bitcoin(20)}
+		err := wallet.Withdraw(Bitcoin(100))
 
-	t.Run("Withdraw Failed", func(t *testing.T) {
-		wallet := Wallet{balance: Bitcoin(20)}
-		err := wallet.Withdraw(30.0)
-		want := Bitcoin(20)
-		assertBalance(t, wallet, want)
+		assertBalance(t, wallet, Bitcoin(20))
 		assertError(t, err, InsufficientFundsError)
 	})
+}
 
-	// t.Run("Withdraw Failed", func(t *testing.T) {
-	// 	wallet := Wallet{balance: Bitcoin(20)}
-	// 	wallet.Withdraw(30.0)
-	// 	want := Bitcoin(20)
-	// 	assertBalance(t, wallet, want)
-	// })
+func assertBalance(t *testing.T, wallet Wallet, want Bitcoin) {
+	got := wallet.Balance()
 
+	if got != want {
+		t.Errorf("got %s want %s", got, want)
+	}
+}
+
+func assertNoError(t *testing.T, got error) {
+	if got != nil {
+		t.Fatal("got an error but didnt want one")
+	}
+}
+
+func assertError(t *testing.T, got error, want error) {
+	if got == nil {
+		t.Fatal("didn't get an error but wanted one")
+	}
+
+	if got != want {
+		t.Errorf("got %s, want %s", got, want)
+	}
 }
