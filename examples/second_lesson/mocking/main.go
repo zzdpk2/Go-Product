@@ -22,48 +22,40 @@ func (s *SpySleeper) Sleep() {
 	s.Calls++
 }
 
+type DefaultSleeper struct{}
+
+func (d *DefaultSleeper) Sleep() {
+	time.Sleep(1 * time.Second)
+}
+
 type ConfigurableSleeper struct {
 	duration time.Duration
+	sleep    func(duration time.Duration)
 }
 
-func (o *ConfigurableSleeper) Sleep() {
-	time.Sleep(o.duration)
-}
-
-const (
-	sleep = "sleep"
-	write = "write"
-)
-
-type CountdownOperationsSpy struct {
-	Calls []string
-}
-
-func (s *CountdownOperationsSpy) Sleep() {
-	s.Calls = append(s.Calls, sleep)
-}
-
-func (s *CountdownOperationsSpy) Write(p []byte) (n int, err error) {
-	s.Calls = append(s.Calls, write)
-	return
-}
-
-func main() {
-	sleeper := &ConfigurableSleeper{duration: 1 * time.Second}
-	Countdown(os.Stdout, sleeper)
+func (c *ConfigurableSleeper) Sleep() {
+	c.sleep(c.duration)
 }
 
 func Countdown(out io.Writer, sleeper Sleeper) {
+
 	for i := countdownStart; i > 0; i-- {
 		sleeper.Sleep()
-	}
-
-	for i := countdownStart; i > 0; i-- {
 		fmt.Fprintln(out, i)
 	}
-
 	sleeper.Sleep()
-	fmt.Fprintln(out, finalWord)
+	fmt.Fprint(out, finalWord)
+}
+
+func main() {
+	// sleeper := &ConfigurableSleeper{duration: 1 * time.Second}
+	// sleeper := &DefaultSleeper{}
+
+	sleeper := &ConfigurableSleeper{
+		duration: 1 * time.Second,
+		sleep:    time.Sleep,
+	}
+	Countdown(os.Stdout, sleeper)
 }
 
 // func Countdown(out io.Writer, sleeper Sleeper) {
