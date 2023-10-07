@@ -38,7 +38,7 @@ func main() {
 			ID:     i,
 			Task:   "Print",
 			Result: "",
-			Done:   0,
+			Done:   UNFINISHED,
 		}
 
 		go func(w *WorkerImpl) {
